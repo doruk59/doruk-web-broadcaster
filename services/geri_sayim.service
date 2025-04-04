@@ -1,0 +1,14 @@
+[Unit]
+Description=Doruk Web Broadcasting Countdown Service
+After=network.target
+
+[Service]
+Type=simple
+User=doruk
+WorkingDirectory=/home/doruk/doruk_web_broadcaster
+ExecStart=/usr/bin/python3 /home/doruk/doruk_web_broadcaster/src/countdown_start.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
