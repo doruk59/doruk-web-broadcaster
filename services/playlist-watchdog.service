@@ -1,0 +1,23 @@
+[Unit]
+Description=Doruk Broadcasting Playlist Watchdog
+After=network.target
+
+[Service]
+Type=simple
+User=doruk
+WorkingDirectory=/home/doruk/doruk_web_broadcaster
+ExecStart=/bin/bash -c 'while true; do \
+    if [ -f playlists/current.json ]; then \
+        python3 -c "import json; \
+        with open('\''playlists/current.json'\'') as f: \
+            data = json.load(f); \
+        if data.get('\''auto_switch'\'', False): \
+            import subprocess; \
+            subprocess.run(['\''./stream.sh'\'', '\''--playlist'\'', data['\''next_playlist'\'']])"; \
+    fi; \
+    sleep 30; \
+done'
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
